@@ -1,6 +1,6 @@
 package com.neves_eduardo.cash_machine;
 
-public enum AvailableMonetaryUnits {
+public enum AvailableNotes {
     HUNDRED(100), FIFTY(50),TWENTY(20), TEN(10);
     private int value;
 
@@ -9,7 +9,7 @@ public enum AvailableMonetaryUnits {
         return this.value;
     }
 
-    private AvailableMonetaryUnits(int value)
+    private AvailableNotes(int value)
     {
         this.value = value;
     }

@@ -8,14 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.apache.commons.lang3.EnumUtils.getEnumList;
-
 public class CashMachine {
-    private List<AvailableMonetaryUnits> listOfNotes;
+    private List<AvailableNotes> listOfNotes;
     private Map<String, Integer> notesQuantity = new HashMap<>();
     public CashMachine() {
-        this.listOfNotes = EnumUtils.getEnumList(AvailableMonetaryUnits.class);
-        listOfNotes.sort(Comparator.comparingInt(AvailableMonetaryUnits::getValue).reversed());
+        this.listOfNotes = EnumUtils.getEnumList(AvailableNotes.class);
+        listOfNotes.sort(Comparator.comparingInt(AvailableNotes::getValue).reversed());
     }
 
     public int withdraw(int quantity) {
@@ -23,7 +21,7 @@ public class CashMachine {
         if(quantity % Iterables.getLast(listOfNotes).getValue() != 0) {
             System.out.println("Please insert a value that is multiple by" + Iterables.getLast(listOfNotes).getValue());
         }
-        for ( AvailableMonetaryUnits note: listOfNotes) {
+        for ( AvailableNotes note: listOfNotes) {
             remaining -= countNotes(remaining,note)*note.getValue();
             if(remaining == 0) break;
         }
@@ -31,7 +29,7 @@ public class CashMachine {
         return remaining;
     }
 
-    private int countNotes(int value, AvailableMonetaryUnits note) {
+    private int countNotes(int value, AvailableNotes note) {
         int numberOfNotes = value/note.getValue();
         notesQuantity.put(note.name(),numberOfNotes);
         return numberOfNotes;
