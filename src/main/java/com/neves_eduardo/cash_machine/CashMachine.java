@@ -25,10 +25,12 @@ public class CashMachine {
         int remaining = quantity;
 
         if(quantity > totalAmountOfCash) {
-            throw new NoNotesForTransactionException("Not enough notes available for this withdrawal, maximum withdrawal amount: " + totalAmountOfCash);
+            throw new NoNotesForTransactionException(
+                    "Not enough notes available for this withdrawal, maximum withdrawal amount: " + totalAmountOfCash);
         }
         if(quantity % smallestAvailableNoteValue != 0) {
-            throw new NoNotesForTransactionException("No notes for this transaction, please insert a value that is multiple by " + smallestAvailableNoteValue);
+            throw new NoNotesForTransactionException(
+                    "No notes for this transaction, please insert a value that is multiple by " + smallestAvailableNoteValue);
         }
 
         for ( AvailableNotes note: listOfNotes) {
@@ -37,6 +39,7 @@ public class CashMachine {
             notesQuantity.put(note.name(),numberOfNotes);
             if(remaining == 0) break;
         }
+        totalAmountOfCash -= quantity;
         return notesQuantity;
     }
 
@@ -44,7 +47,6 @@ public class CashMachine {
         int numberOfNotesWithdrawn = value/note.getValue();
         if(numberOfNotesWithdrawn > note.getNumberOfNotesStored()) {numberOfNotesWithdrawn = note.getNumberOfNotesStored();}
         note.setNumberOfNotesStored(note.getNumberOfNotesStored() - numberOfNotesWithdrawn);
-        System.out.println(note.getNumberOfNotesStored());
         return numberOfNotesWithdrawn;
     }
 
