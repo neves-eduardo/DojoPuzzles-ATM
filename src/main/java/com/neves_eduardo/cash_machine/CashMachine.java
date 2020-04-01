@@ -24,6 +24,9 @@ public class CashMachine {
         int smallestAvailableNoteValue = listOfNotes.stream().filter(s -> s.getNumberOfNotesStored() != 0).sorted(Comparator.reverseOrder()).collect(Collectors.toList()).get(0).getValue();
         int remaining = quantity;
 
+
+        if(quantity<0){throw new IllegalArgumentException("Invalid Input: Please insert only positive numbers");}
+
         if(quantity > totalAmountOfCash) {
             throw new NoNotesForTransactionException(
                     "Not enough notes available for this withdrawal, maximum withdrawal amount: " + totalAmountOfCash);
