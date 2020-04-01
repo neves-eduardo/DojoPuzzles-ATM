@@ -8,17 +8,21 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         CashMachine cashMachine = new CashMachine();
-        System.out.println("Welcome to The Bank \nYour balance: infinite");
-        try {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Please insert the desired amount to withdraw:");
-            int z = scanner.nextInt();
-            System.out.println(cashMachine.withdraw(z));
-        } catch (InputMismatchException ex) {
-            System.out.println("Invalid input, please insert only numbers");
-        } catch (NoNotesForTransactionException ex) {
-            System.out.println(ex.getMessage());
+        System.out.println("Welcome to The Bank \nYour balance: ~INFINITE~");
+        String response = "";
+        while (!response.equals("n")) {
+            try {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Please insert the desired amount to withdraw:");
+                int value = scanner.nextInt();
+                System.out.println("NOTES USED: \n" + cashMachine.withdraw(value));
+                System.out.println("Make another withdrawal? (n to exit)");
+                response = scanner.next();
+            } catch (InputMismatchException ex) {
+                System.out.println("Invalid input, please insert only numbers");
+            } catch (NoNotesForTransactionException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
-
     }
 }
