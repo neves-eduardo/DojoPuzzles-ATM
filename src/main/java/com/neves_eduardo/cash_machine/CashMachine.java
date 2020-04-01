@@ -25,7 +25,7 @@ public class CashMachine {
         int remaining = quantity;
 
         if(quantity > totalAmountOfCash) {
-            throw new NoNotesForTransactionException("Not enough notes available for this withdrawal, please insert a smaller value");
+            throw new NoNotesForTransactionException("Not enough notes available for this withdrawal, maximum withdrawal amount: " + totalAmountOfCash);
         }
         if(quantity % smallestAvailableNoteValue != 0) {
             throw new NoNotesForTransactionException("No notes for this transaction, please insert a value that is multiple by " + smallestAvailableNoteValue);
