@@ -1,5 +1,7 @@
 package com.neves_eduardo.cash_machine;
 
+import com.neves_eduardo.cash_machine.atm.CashMachine;
+import com.neves_eduardo.cash_machine.exception.MachineEmptyException;
 import com.neves_eduardo.cash_machine.exception.NoNotesForTransactionException;
 
 import java.util.InputMismatchException;
@@ -20,7 +22,7 @@ public class Main {
                 response = scanner.next();
             } catch (InputMismatchException ex) {
                 System.out.println("Invalid input, please insert only numbers");
-            } catch (NoNotesForTransactionException ex) {
+            } catch (NoNotesForTransactionException | MachineEmptyException ex) {
                 System.out.println(ex.getMessage());
             }
         }

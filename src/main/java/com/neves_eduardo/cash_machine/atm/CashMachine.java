@@ -1,6 +1,5 @@
-package com.neves_eduardo.cash_machine;
+package com.neves_eduardo.cash_machine.atm;
 
-import com.google.common.collect.Iterables;
 import com.neves_eduardo.cash_machine.exception.MachineEmptyException;
 import com.neves_eduardo.cash_machine.exception.NoNotesForTransactionException;
 import org.apache.commons.lang3.EnumUtils;
