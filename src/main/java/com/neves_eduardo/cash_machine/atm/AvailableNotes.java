@@ -1,4 +1,4 @@
-package com.neves_eduardo.cash_machine;
+package com.neves_eduardo.cash_machine.atm;
 
 public enum AvailableNotes {
     HUNDRED(100,100), FIFTY(50,100), TWENTY(20,100), TEN(10,100);

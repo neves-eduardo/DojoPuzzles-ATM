@@ -1,5 +1,7 @@
 package com.neves_eduardo.cash_machine;
 
+import com.neves_eduardo.cash_machine.atm.AvailableNotes;
+import com.neves_eduardo.cash_machine.atm.CashMachine;
 import com.neves_eduardo.cash_machine.exception.MachineEmptyException;
 import com.neves_eduardo.cash_machine.exception.NoNotesForTransactionException;
 import org.junit.Before;
