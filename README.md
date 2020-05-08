@@ -8,12 +8,11 @@ I've choose to have a finite number of notes in the machine.
 
 Remember! The ammount of notes is finite, but the machine will always try to give the smallest amount possible given the notes it has. That is, if you want to withdraw 100$, but there are no 100 notes left, the machine will have to give you two 50$ notes.
 
-Changes:
--Project now uses BigDecimal for monetary values
--Projecto now uses a static list to store the notes, instead of an enum.
+### Changes:  
+- Project now uses BigDecimal for monetary values  
+- Project now uses a static list to store the notes, instead of an enum.  
 
-Future improvements:
-- A better way to track the number of stored bills, while maintaining the project simplicity
+### Future improvements:
 - Maybe making the algorithm more generic, so it can be reused in other similar applications, such as a vending machine (That implicates the support for coins, which does not make a lot of sense in a ATM machine, so it would need refactoring )
 
 ### Running:
