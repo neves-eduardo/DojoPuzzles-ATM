@@ -26,15 +26,8 @@ public class CashMachine {
 
     public Map<String,Integer> withdraw(BigDecimal quantityToWithdraw) {
         if(totalAmountOfCash.compareTo(BigDecimal.ZERO) == 0) {throw new MachineEmptyException("Machine Empty! Please use another one.");}
-
         Map<String, Integer> notesQuantity = new HashMap<>();
-
-        BigDecimal smallestAvailableNoteValue = listOfNotes.stream()
-                .filter(s -> s.getNumberOfNotesStored() != 0)
-                .sorted(Comparator.comparing(Note::getValue))
-                .collect(Collectors.toList())
-                .get(0)
-                .getValue();
+        BigDecimal smallestAvailableNoteValue = getSmallestNoteAvailable();
         BigDecimal remainingToWithdraw = quantityToWithdraw;
         validateWithdrawalAmount(quantityToWithdraw,smallestAvailableNoteValue);
 
@@ -68,4 +61,12 @@ public class CashMachine {
         }
     }
 
+    private BigDecimal getSmallestNoteAvailable() {
+        return this.listOfNotes.stream()
+                .filter(s -> s.getNumberOfNotesStored() != 0)
+                .sorted(Comparator.comparing(Note::getValue))
+                .collect(Collectors.toList())
+                .get(0)
+                .getValue();
+    }
 }
