@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CashMachine {
+
     private List<AvailableNotes> listOfNotes;
     private int totalAmountOfCash;
     public CashMachine() {
@@ -54,6 +55,5 @@ public class CashMachine {
         note.setNumberOfNotesStored(note.getNumberOfNotesStored() - numberOfNotesWithdrawn);
         return numberOfNotesWithdrawn;
     }
-
 
 }

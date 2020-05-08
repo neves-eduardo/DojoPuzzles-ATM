@@ -8,6 +8,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
         CashMachine cashMachine = new CashMachine();
         System.out.println("Welcome to The Bank \nYour balance: ~INFINITE~");
@@ -27,4 +28,5 @@ public class Main {
             }
         }
     }
+
 }
