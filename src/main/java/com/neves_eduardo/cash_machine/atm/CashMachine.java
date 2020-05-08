@@ -69,4 +69,5 @@ public class CashMachine {
                 .get(0)
                 .getValue();
     }
+
 }
