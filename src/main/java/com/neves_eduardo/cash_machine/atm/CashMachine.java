@@ -2,8 +2,9 @@ package com.neves_eduardo.cash_machine.atm;
 
 import com.neves_eduardo.cash_machine.exception.MachineEmptyException;
 import com.neves_eduardo.cash_machine.exception.NoNotesForTransactionException;
-import org.apache.commons.lang3.EnumUtils;
 
+
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -11,49 +12,61 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CashMachine {
-    private List<AvailableNotes> listOfNotes;
-    private int totalAmountOfCash;
-    public CashMachine() {
-        this.listOfNotes = EnumUtils.getEnumList(AvailableNotes.class);
-        listOfNotes.sort(Comparator.comparingInt(AvailableNotes::getValue).reversed());
-        totalAmountOfCash = listOfNotes.stream().mapToInt(n -> n.getValue() * n.getNumberOfNotesStored()).sum();
+
+    private List<Note> listOfNotes;
+    private BigDecimal totalAmountOfCash;
+    private static final String CURRENCY = "R$";
+
+    public CashMachine(List<Note> listOfNotes) {
+        this.listOfNotes = listOfNotes;
+        this.totalAmountOfCash = StoredNotes.getTotalAmountOfCash();
+
     }
 
-    public Map<String,Integer> withdraw(int quantity) {
-        if(totalAmountOfCash == 0) {throw new MachineEmptyException("Machine Empty! Please use another one.");}
-
+    public Map<String,Integer> withdraw(BigDecimal quantityToWithdraw) {
+        if(totalAmountOfCash.compareTo(BigDecimal.ZERO) == 0) {throw new MachineEmptyException("Machine Empty! Please use another one.");}
         Map<String, Integer> notesQuantity = new HashMap<>();
-        int smallestAvailableNoteValue = listOfNotes.stream().filter(s -> s.getNumberOfNotesStored() != 0).sorted(Comparator.reverseOrder()).collect(Collectors.toList()).get(0).getValue();
-        int remaining = quantity;
+        BigDecimal smallestAvailableNoteValue = getSmallestNoteAvailable();
+        BigDecimal remainingToWithdraw = quantityToWithdraw;
+        validateWithdrawalAmount(quantityToWithdraw,smallestAvailableNoteValue);
 
-
-        if(quantity<0){throw new IllegalArgumentException("Invalid Input: Please insert only positive numbers");}
-
-        if(quantity > totalAmountOfCash) {
-            throw new NoNotesForTransactionException(
-                    "Not enough notes available for this withdrawal, maximum withdrawal amount: " + totalAmountOfCash);
+        for ( Note note: listOfNotes) {
+            int usedOfNotes = countUsedNotes(remainingToWithdraw,note);
+            remainingToWithdraw = remainingToWithdraw.subtract(note.getValue().multiply(BigDecimal.valueOf(usedOfNotes)));
+            if(usedOfNotes != 0) notesQuantity.put(CURRENCY + note.getValue().toString(),usedOfNotes);
+            if(remainingToWithdraw.compareTo(BigDecimal.ZERO) == 0) break;
         }
-        if(quantity % smallestAvailableNoteValue != 0) {
-            throw new NoNotesForTransactionException(
-                    "No notes for this transaction, please insert a value that is multiple by " + smallestAvailableNoteValue);
-        }
-
-        for ( AvailableNotes note: listOfNotes) {
-            int numberOfNotes = countNotes(remaining,note);
-            remaining -= numberOfNotes*note.getValue();
-            if(numberOfNotes != 0) notesQuantity.put(note.name(),numberOfNotes);
-            if(remaining == 0) break;
-        }
-        totalAmountOfCash -= quantity;
+        totalAmountOfCash = totalAmountOfCash.subtract(quantityToWithdraw);
         return notesQuantity;
     }
 
-    private int countNotes(int value, AvailableNotes note) {
-        int numberOfNotesWithdrawn = value/note.getValue();
+    private int countUsedNotes(BigDecimal value, Note note) {
+        int numberOfNotesWithdrawn = value.intValue()/note.getValue().intValue();
         if(numberOfNotesWithdrawn > note.getNumberOfNotesStored()) {numberOfNotesWithdrawn = note.getNumberOfNotesStored();}
         note.setNumberOfNotesStored(note.getNumberOfNotesStored() - numberOfNotesWithdrawn);
         return numberOfNotesWithdrawn;
     }
 
+    private void validateWithdrawalAmount(BigDecimal quantityToWithdraw, BigDecimal smallestAvailableNoteValue) {
+        if(quantityToWithdraw.compareTo(BigDecimal.ZERO) < 0){throw new IllegalArgumentException("Invalid Input: Please insert only positive numbers");}
+
+        if(quantityToWithdraw.compareTo(totalAmountOfCash) > 0) {
+            throw new NoNotesForTransactionException(
+                    "Not enough notes available for this withdrawal, maximum withdrawal amount: " + totalAmountOfCash);
+        }
+        if(!(quantityToWithdraw.remainder(smallestAvailableNoteValue).compareTo(BigDecimal.ZERO) == 0)) {
+            throw new NoNotesForTransactionException(
+                    "No notes for this transaction, please insert a value that is multiple by " + smallestAvailableNoteValue);
+        }
+    }
+
+    private BigDecimal getSmallestNoteAvailable() {
+        return this.listOfNotes.stream()
+                .filter(s -> s.getNumberOfNotesStored() != 0)
+                .sorted(Comparator.comparing(Note::getValue))
+                .collect(Collectors.toList())
+                .get(0)
+                .getValue();
+    }
 
 }
