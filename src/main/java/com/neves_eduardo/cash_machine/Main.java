@@ -14,7 +14,6 @@ public class Main {
 
     public static void main(String[] args) {
         addNotesToATM();
-        System.out.println(new BigDecimal("100.00").remainder(new BigDecimal("10.00")).compareTo(BigDecimal.ZERO));
         CashMachine cashMachine = new CashMachine(StoredNotes.getStoredNotes());
         System.out.println("Welcome to The Bank \nYour balance: ~INFINITE~");
         String response = "";
