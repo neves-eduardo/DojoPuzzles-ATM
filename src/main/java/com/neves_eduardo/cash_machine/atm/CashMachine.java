@@ -5,7 +5,6 @@ import com.neves_eduardo.cash_machine.exception.NoNotesForTransactionException;
 
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
